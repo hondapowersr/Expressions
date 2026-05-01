@@ -30,3 +30,21 @@ npm-debug.log*
 # IDE
 .vscode/
 .idea/
+
+# Cloudflare / Wrangler
+.wrangler/
+
+# Additional env files
+.env.production
+.env.development
+.env.staging
+
+# GCP service account keys
+service-account*.json
+gcloud-key*.json
+
+# Turbo remote cache config
+.turbo/config.json
+
+# Next.js static export
+out/
