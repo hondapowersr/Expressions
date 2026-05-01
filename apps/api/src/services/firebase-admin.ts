@@ -17,7 +17,7 @@ export function getFirebaseAdmin(): admin.app.App {
   app = admin.initializeApp({
     credential: admin.credential.applicationDefault(),
     projectId,
-    storageBucket: `${projectId}.appspot.com`,
+    storageBucket: `${projectId}.firebasestorage.app`,
   });
 
   return app;
