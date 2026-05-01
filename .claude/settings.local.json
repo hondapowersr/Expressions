@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gcloud services *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(npm install *)",
+      "Bash(pnpm install *)",
+      "Bash(git init *)"
+    ]
+  }
+}
