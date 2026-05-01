@@ -12,23 +12,24 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "express": "^5.0.0",
-    "cors": "^2.8.5",
-    "firebase-admin": "^12.0.0",
+    "@expressions/shared": "workspace:^",
     "@google-cloud/vertexai": "^1.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^5.0.0",
+    "firebase-admin": "^12.0.0",
     "helmet": "^7.1.0",
-    "morgan": "^1.10.0",
-    "dotenv": "^16.0.0"
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@types/express": "^5.0.0",
     "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.0.0",
+    "@types/supertest": "^6.0.0",
+    "supertest": "^7.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.4.0",
-    "vitest": "^1.0.0",
-    "supertest": "^7.0.0",
-    "@types/supertest": "^6.0.0"
+    "vitest": "^1.0.0"
   }
 }
