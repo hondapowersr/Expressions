@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
-
 describe('Frontend smoke test', () => {
-  it('environment has required config', () => {
+  it('has NEXT_PUBLIC_FIREBASE_PROJECT_ID defined', () => {
     expect(process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID).toBeDefined();
+  });
+
+  it('has NEXT_PUBLIC_API_URL defined', () => {
     expect(process.env.NEXT_PUBLIC_API_URL).toBeDefined();
   });
 });
