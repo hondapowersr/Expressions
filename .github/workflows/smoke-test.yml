@@ -1,0 +1,11 @@
+name: Smoke test
+
+on:
+  push:
+    branches: [test]
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow is alive"
