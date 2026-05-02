@@ -13,9 +13,7 @@ const PORT = process.env.PORT || 8080;
 
 const allowedOrigins = [
   'http://localhost:3000',
-  'https://expressions-9t5.pages.dev',
-  // Branch preview URLs follow the pattern: <branch>.<project>.pages.dev
-  'https://test.expressions-9t5.pages.dev',
+  'https://expressions.hondapowersr.workers.dev',
 ];
 
 app.use(helmet());
