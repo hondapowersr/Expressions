@@ -83,7 +83,8 @@ jobs:
           NEXT_PUBLIC_API_URL: https://expressions-api-22146710842.us-central1.run.app
 
       - name: Build for Cloudflare
-        run: pnpm --filter @expressions/web build:cf
+        run: pnpm build:cf
+        working-directory: apps/web
         env:
           NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
           NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
