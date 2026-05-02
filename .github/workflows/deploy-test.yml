@@ -1,0 +1,93 @@
+name: Deploy test branch
+
+on:
+  push:
+    branches: [test]
+
+jobs:
+  test-and-deploy-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build shared
+        run: pnpm --filter @expressions/shared build
+
+      - name: Test API
+        run: pnpm --filter @expressions/api test
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Build and push Docker image
+        run: |
+          gcloud builds submit . \
+            --config=cloudbuild.yaml \
+            --project=gen-lang-client-0010416291
+
+      - name: Deploy to Cloud Run (staging)
+        run: |
+          gcloud run deploy expressions-api \
+            --image=gcr.io/gen-lang-client-0010416291/expressions-api:latest \
+            --platform=managed \
+            --region=us-central1 \
+            --allow-unauthenticated \
+            --service-account=expressions-api@gen-lang-client-0010416291.iam.gserviceaccount.com \
+            --set-env-vars=NODE_ENV=production,GCP_PROJECT_ID=gen-lang-client-0010416291 \
+            --project=gen-lang-client-0010416291
+
+  deploy-web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'pnpm'
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Build shared
+        run: pnpm --filter @expressions/shared build
+
+      - name: Test web
+        run: pnpm --filter @expressions/web test
+
+      - name: Build for Cloudflare
+        run: pnpm --filter @expressions/web build:cf
+        env:
+          NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+          NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+          NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+          NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+          NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+          NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+          NEXT_PUBLIC_API_URL: https://expressions-api-22146710842.us-central1.run.app
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy apps/web/.open-next/assets --project-name=expressions --branch=test

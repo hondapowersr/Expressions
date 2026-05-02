@@ -1,9 +1,10 @@
 import { Router, Request, Response } from 'express';
+import type { Router as RouterType } from 'express';
 import { requireAuth } from '../middleware/auth';
 import { getGeminiModel, buildSystemPrompt, mapToVertexHistory } from '../services/vertex-ai';
 import type { ChatRequest } from '@expressions/shared';
 
-export const aiRouter = Router();
+export const aiRouter: RouterType = Router();
 
 aiRouter.post('/chat', requireAuth, async (req: Request, res: Response): Promise<void> => {
   const { messages, artistRole, sessionContext } = req.body as ChatRequest;

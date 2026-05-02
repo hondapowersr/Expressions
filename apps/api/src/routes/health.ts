@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import type { Router as RouterType } from 'express';
 import type { HealthResponse } from '@expressions/shared';
 
-export const healthRouter = Router();
+export const healthRouter: RouterType = Router();
 
 healthRouter.get('/', (_req, res) => {
   const response: HealthResponse = {
