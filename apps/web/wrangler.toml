@@ -1,10 +1,9 @@
 name = "expressions"
-compatibility_date = "2024-09-23"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2026-04-15"
+compatibility_flags = ["nodejs_compat", "global_fetch_strictly_public"]
 main = ".open-next/worker.js"
 assets = { directory = ".open-next/assets", binding = "ASSETS" }
 
 [vars]
 NEXT_PUBLIC_FIREBASE_PROJECT_ID = "gen-lang-client-0010416291"
-# NEXT_PUBLIC_API_URL set via Cloudflare Pages dashboard (different per environment)
 NEXT_PUBLIC_API_URL = ""
